@@ -1,0 +1,46 @@
+﻿<Window x:Class="BasicMechanism.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:BasicMechanism"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" SizeToContent="Manual" ResizeMode="NoResize">
+    <Grid Cursor="Hand">
+        <TabControl>
+            <TabItem x:Name="ManagementTab" Header="Rule Management" Cursor="Hand">
+                <Grid Background="White" Cursor="Arrow">
+                    <Button x:Name="ButtonAdd" Content="ADD" HorizontalAlignment="Left" Margin="10,328,0,0" VerticalAlignment="Top" Width="45" Height="20" Cursor="Hand" Click="ButtonAdd_Click" Background="#FF7FC927"/>
+                    <Button x:Name="ButtonDelete" Content="DELETE" HorizontalAlignment="Left" Margin="154,328,0,0" VerticalAlignment="Top" Width="44" Height="20" Cursor="Hand" Click="ButtonDelete_Click" Background="#FFE82E2E"/>
+                    <Button x:Name="ButtonEdit" Content="EDIT" HorizontalAlignment="Left" Margin="82,328,0,0" VerticalAlignment="Top" Height="20" Width="44" Click="ButtonEdit_Click" Background="#FF2586E6" Cursor="Hand"/>
+                    <Label Content="List of Rules:" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top" Width="188"/>
+                    <ListView x:Name="ListOfRules" Margin="10,41,596,83" SelectionChanged="ListOfRules_SelectionChanged" Foreground="Black"/>
+                    <TextBlock x:Name="TextOfRule" HorizontalAlignment="Left" Margin="278,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="164" Width="456" Cursor="Arrow"/>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="UseTab" Header="Rule Usage" Cursor="Hand">
+                <Grid Background="White" Cursor="Arrow">
+                    <TextBlock HorizontalAlignment="Left" Margin="32,50,0,0" Text="Enter text that you want to be colored by rules:" TextWrapping="Wrap" VerticalAlignment="Top" Height="80" Width="150"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="32,255,0,0" Text="Your text colored by rules:" TextWrapping="Wrap" VerticalAlignment="Top" Height="80" Width="150"/>
+                    <Button x:Name="ApplyRulesButton" Content="Apply Rules" HorizontalAlignment="Left" Margin="523,0,0,0" VerticalAlignment="Center" Height="30" Width="90" Background="#FF38F32F" Click="ApplyRulesButton_Click" Cursor="Hand"/>
+                    <Button x:Name="ClearTextButton" Content="Clear Text" HorizontalAlignment="Left" Margin="640,0,0,0" VerticalAlignment="Center" Height="30" Width="90" Background="#FFF3882F" Click="ClearTextButton_Click" Cursor="Hand"/>
+                    <RichTextBox x:Name="RawText" Margin="230,50,64,248">
+                        <FlowDocument>
+                            <Paragraph>
+                                <Run Text=""/>
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+                    <RichTextBox x:Name="ColoredText" Margin="230,244,64,60" IsEnabled="False" AutomationProperties.IsOffscreenBehavior="Default">
+                        <FlowDocument>
+                            <Paragraph>
+                                <Run Text=""/>
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

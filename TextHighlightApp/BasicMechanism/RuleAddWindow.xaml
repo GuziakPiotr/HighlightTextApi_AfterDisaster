@@ -1,0 +1,19 @@
+﻿<Window x:Class="BasicMechanism.RuleAddWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:BasicMechanism"
+        mc:Ignorable="d"
+        Title="RuleAddWindow" Height="450" Width="800">
+    <Grid IsHitTestVisible="True" Margin="0,0,0,0">
+        <Label Content="Text to highlight:" HorizontalAlignment="Left" Margin="48,79,0,0" VerticalAlignment="Top" Width="169" FontSize="20"/>
+        <TextBox x:Name="RuleText" HorizontalAlignment="Left" Margin="222,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="444" Height="69" Cursor="IBeam"/>
+        <Label Content="Color:" HorizontalAlignment="Left" Margin="102,217,0,0" VerticalAlignment="Top" FontSize="20"/>
+        <Button x:Name="ButtonAccept" Content="ACCEPT" HorizontalAlignment="Left" Margin="465,346,0,0" VerticalAlignment="Top" Height="41" Width="122" Click="ButtonAccept_Click" Cursor="Hand"/>
+        <Button x:Name="ButtonCancel" Content="CANCEL" HorizontalAlignment="Left" Margin="640,346,0,0" VerticalAlignment="Top" Height="41" Width="122" Click="ButtonCancel_Click" Cursor="Hand"/>
+        <wpfx:ColorPicker Name="ColorPickerRule" DisplayColorAndName="True" Margin="222,207,356,170" Cursor="Hand" />
+        <TextBlock x:Name="EditRuleDisclaimer" HorizontalAlignment="Left" Margin="537,199,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="73" Width="175" FontWeight="Bold" FontSize="14"/>
+    </Grid>
+</Window>
