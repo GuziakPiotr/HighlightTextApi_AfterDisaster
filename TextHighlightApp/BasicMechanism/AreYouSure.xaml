@@ -1,0 +1,15 @@
+﻿<Window x:Class="BasicMechanism.AreYouSure"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BasicMechanism"
+        mc:Ignorable="d"
+        Title="AreYouSure" Height="450" Width="800">
+    <Grid>
+        <TextBlock HorizontalAlignment="Center" Margin="0,45,0,0" Text="Are you sure that you want to close the window? Your progress will be lost" TextWrapping="Wrap" VerticalAlignment="Top" Height="128" Width="622" FontSize="20"/>
+        <Button x:Name="No" Content="NO" HorizontalAlignment="Left" Margin="538,262,0,0" VerticalAlignment="Top" Height="88" Width="173" FontSize="36" Click="No_Click"/>
+        <Button x:Name="Yes" Content="YES" HorizontalAlignment="Left" Margin="89,262,0,0" VerticalAlignment="Top" Height="88" Width="173" FontSize="36" Click="Yes_Click"/>
+
+    </Grid>
+</Window>
