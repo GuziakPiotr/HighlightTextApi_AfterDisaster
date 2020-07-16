@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\MOJE\\PROGRAMOWANIE\\C#.NETitd\\APItestapiwhateveridk\\HighightTextAPI\\TextHighlightApp\\BasicMechanism\\BasicMechanism.csproj": {}
+    "D:\\MOJE\\PROGRAMOWANIE\\C#.NETitd\\APItestapiwhateveridk\\AfterDisasterAPI\\HighlightTextApi_AfterDisaster\\TextHighlightApp\\BasicMechanism\\BasicMechanism.csproj": {}
   },
   "projects": {
-    "D:\\MOJE\\PROGRAMOWANIE\\C#.NETitd\\APItestapiwhateveridk\\HighightTextAPI\\TextHighlightApp\\BasicMechanism\\BasicMechanism.csproj": {
+    "D:\\MOJE\\PROGRAMOWANIE\\C#.NETitd\\APItestapiwhateveridk\\AfterDisasterAPI\\HighlightTextApi_AfterDisaster\\TextHighlightApp\\BasicMechanism\\BasicMechanism.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MOJE\\PROGRAMOWANIE\\C#.NETitd\\APItestapiwhateveridk\\HighightTextAPI\\TextHighlightApp\\BasicMechanism\\BasicMechanism.csproj",
+        "projectUniqueName": "D:\\MOJE\\PROGRAMOWANIE\\C#.NETitd\\APItestapiwhateveridk\\AfterDisasterAPI\\HighlightTextApi_AfterDisaster\\TextHighlightApp\\BasicMechanism\\BasicMechanism.csproj",
         "projectName": "BasicMechanism",
-        "projectPath": "D:\\MOJE\\PROGRAMOWANIE\\C#.NETitd\\APItestapiwhateveridk\\HighightTextAPI\\TextHighlightApp\\BasicMechanism\\BasicMechanism.csproj",
+        "projectPath": "D:\\MOJE\\PROGRAMOWANIE\\C#.NETitd\\APItestapiwhateveridk\\AfterDisasterAPI\\HighlightTextApi_AfterDisaster\\TextHighlightApp\\BasicMechanism\\BasicMechanism.csproj",
         "packagesPath": "C:\\Users\\Piotrek\\.nuget\\packages\\",
-        "outputPath": "D:\\MOJE\\PROGRAMOWANIE\\C#.NETitd\\APItestapiwhateveridk\\HighightTextAPI\\TextHighlightApp\\BasicMechanism\\obj\\",
+        "outputPath": "D:\\MOJE\\PROGRAMOWANIE\\C#.NETitd\\APItestapiwhateveridk\\AfterDisasterAPI\\HighlightTextApi_AfterDisaster\\TextHighlightApp\\BasicMechanism\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Piotrek\\AppData\\Roaming\\NuGet\\NuGet.Config",
