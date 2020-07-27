@@ -23,8 +23,8 @@ namespace BasicMechanism
     /// </summary>
 
     //TODO: 
-    //  - Change the display of applied rules so every rule is highlighted in one line
-    //  - Change the display of applied rules so every occuration of a rule is hightlighted
+    //  - Change the display of applied rules so every rule and occuartion of it is highlighted in one line
+    //  - Figure out why there is problem with offset with colors
     //  - Rules usage freak out when there is more than 1 line or when there is a text pasted
     //  - Put no resize rn, but i could try to make it resize later on
 
@@ -32,6 +32,7 @@ namespace BasicMechanism
     {
         public List<NewRule> codeListOfRules = new List<NewRule>();
         public string colorOfEditedRule;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -39,19 +40,16 @@ namespace BasicMechanism
             ListOfRules.SelectionMode = SelectionMode.Single;
         }
 
-        //-------------Buttons and List of Rules ------------
-
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
             RuleAddWindow ruleWindow = new RuleAddWindow();
 
             ruleWindow.indexFromEvent = codeListOfRules.Count;
-            ruleWindow.AddRuleEvent += new EventHandler<RuleAddEvents>(ruleWindow_AddRuleEvent);
+            ruleWindow.AddOrEditRuleEvent += new EventHandler<RuleAddEvents>(RuleWindow_AddOrEditRuleEvent);
             ruleWindow.isThisAdd = true;
 
             TextOfRule.Text = null;
             ruleWindow.ShowDialog();
-
         }
 
         private void ButtonEdit_Click(object sender, RoutedEventArgs e)
@@ -70,7 +68,7 @@ namespace BasicMechanism
                 ruleWindow.EditRuleDisclaimer.Text = "If you don't pick a color while editing the rule it will remain the same as before.";
                 ruleWindow.isThisAdd = false;
 
-                ruleWindow.AddRuleEvent += new EventHandler<RuleAddEvents>(ruleWindow_AddRuleEvent);
+                ruleWindow.AddOrEditRuleEvent += new EventHandler<RuleAddEvents>(RuleWindow_AddOrEditRuleEvent);
 
                 TextOfRule.Text = null;
                 ruleWindow.ShowDialog();
@@ -98,7 +96,7 @@ namespace BasicMechanism
             }
             else
             {
-                TextOfRule.Text = "Please select item from the list you want to delete.";
+                TextOfRule.Text = "Please select item from the list that you want to delete.";
             }
         }
 
@@ -114,14 +112,11 @@ namespace BasicMechanism
             }
         }
 
-        //------------ Helping methods -------------
-
         public void DrawingTheListView()
         {
             List<NewRule> tempList = new List<NewRule>();
-            ListView tempView = new ListView();
 
-            int lenOfList = codeListOfRules.Count();
+            int lenOfList = codeListOfRules.Count;
             int ruleCounter = 0;
 
             ListOfRules.Items.Clear();
@@ -135,7 +130,7 @@ namespace BasicMechanism
                     ListViewItem ruleItem = new ListViewItem();
 
                     ruleItem.Foreground = StringToBrush(codeListOfRules[i].Color);
-                    ruleItem.Content = ruleCounter + ") " + codeListOfRules[i].Rule + "//" + codeListOfRules[i].Color;
+                    ruleItem.Content = FormatingNameDispalyedInListOfRules(ruleCounter, codeListOfRules[i].Rule, codeListOfRules[i].Color);
 
                     ListOfRules.Items.Insert(ruleCounter, ruleItem);
                     ruleCounter++;
@@ -144,8 +139,6 @@ namespace BasicMechanism
             codeListOfRules = tempList;
         }
 
-        //should somehow handle exception when i'll pass a string that cannot be converted into color than brush...
-        //(i guess it won't happened couse it's code use only for rule color and color of a rule is from color picker)
         public Brush StringToBrush(string str)
         {
             Color color = (Color)ColorConverter.ConvertFromString(str);
@@ -153,10 +146,8 @@ namespace BasicMechanism
 
             return brushItIs;
         }
-
-        //-------------Event from RuleAddWindow-------------
         
-        void ruleWindow_AddRuleEvent(object sender, RuleAddEvents e)
+        void RuleWindow_AddOrEditRuleEvent(object sender, RuleAddEvents e)
         {
             int passedId = e.EventIdOfRule;
 
@@ -171,7 +162,7 @@ namespace BasicMechanism
             {
                 codeListOfRules.Insert(passedId, new NewRule { Id = passedId, Rule = e.EventTextOfRule, Color = e.EventColorOfRule });
 
-                ruleItem.Content = passedId + ") " + e.EventTextOfRule + "//" + e.EventColorOfRule;
+                ruleItem.Content = FormatingNameDispalyedInListOfRules(passedId, e.EventTextOfRule, e.EventColorOfRule);
 
                 isItAddCall = true;
             }
@@ -181,15 +172,14 @@ namespace BasicMechanism
                 if (e.EventColorOfRule == "")
                 {
                     codeListOfRules.Insert(passedId, new NewRule { Id = passedId, Rule = e.EventTextOfRule, Color = colorOfEditedRule });
-                    ruleItem.Content = passedId + ") " + e.EventTextOfRule + "//" + colorOfEditedRule;
+                    ruleItem.Content = FormatingNameDispalyedInListOfRules(passedId, e.EventTextOfRule, colorOfEditedRule);
 
                     ruleItem.Foreground = StringToBrush(colorOfEditedRule);
                 }
                 else
                 {
                     codeListOfRules.Insert(passedId, new NewRule { Id = passedId, Rule = e.EventTextOfRule, Color = e.EventColorOfRule });
-                    ruleItem.Content = passedId + ") " + e.EventTextOfRule + "//" + e.EventColorOfRule;
-
+                    ruleItem.Content = FormatingNameDispalyedInListOfRules(passedId, e.EventTextOfRule, e.EventColorOfRule);
 
                     ruleItem.Foreground = StringToBrush(e.EventColorOfRule);
                 }
@@ -212,13 +202,13 @@ namespace BasicMechanism
             }
         
         }
-        
 
-        //_____________________ End of Rule Management tab _______________________
+        private string FormatingNameDispalyedInListOfRules(int id, string rule, string color)
+        {
+            string displayedName = String.Format("{0}) {1}//{2}", id, rule, color);
 
-        // Idk if that shouldn't be in the second project file:
-        //_____________________ Start of Rule Usage tab ________________________
-
+            return displayedName;
+        }
 
         private void ClearTextButton_Click(object sender, RoutedEventArgs e)
         {

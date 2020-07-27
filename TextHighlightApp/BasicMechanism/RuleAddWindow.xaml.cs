@@ -26,13 +26,13 @@ namespace BasicMechanism
     {
         public int indexFromEvent;
         public bool isThisAdd;
-        public event EventHandler<RuleAddEvents> AddRuleEvent;
+        public event EventHandler<RuleAddEvents> AddOrEditRuleEvent;
        
         protected void OnAddRuleEvent(RuleAddEvents e)
         {
-            EventHandler<RuleAddEvents> handler = AddRuleEvent;
-            if (this.AddRuleEvent != null)
-                this.AddRuleEvent(this, e);
+            EventHandler<RuleAddEvents> handler = AddOrEditRuleEvent;
+            if (this.AddOrEditRuleEvent != null)
+                this.AddOrEditRuleEvent(this, e);
         }
 
         public RuleAddWindow()
