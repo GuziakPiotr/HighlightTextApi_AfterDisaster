@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BasicMechanism
+﻿namespace TextHighlightCore
 {
-    public class NewRule
+    public class ColorRule
     {
+        
         public int Id { get; set; }
-        public string Rule { get; set; }
-        //public string Color { get; set; }
+        public string RuleText { get; set; }
         public string Color { get; set; }
 
 
         //override ToString() to get text in the viewBox
         public override string ToString()
         {
-            return $"{Id}){Rule}//{Color}";
+            return $"{Id}){RuleText}//{Color}";
             //Id + ") " + Rule + "//" + Color;
         }
     }

@@ -26,7 +26,11 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "projectReferences": {}
+            "projectReferences": {
+              "D:\\MOJE\\PROGRAMOWANIE\\C#.NETitd\\APItestapiwhateveridk\\AfterDisasterAPI\\HighlightTextApi_AfterDisaster\\TextHighlightApp\\TextHighlightCore\\TextHighlightCore.csproj": {
+                "projectPath": "D:\\MOJE\\PROGRAMOWANIE\\C#.NETitd\\APItestapiwhateveridk\\AfterDisasterAPI\\HighlightTextApi_AfterDisaster\\TextHighlightApp\\TextHighlightCore\\TextHighlightCore.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -65,6 +69,70 @@
             },
             "Microsoft.WindowsDesktop.App.WPF": {
               "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\MOJE\\PROGRAMOWANIE\\C#.NETitd\\APItestapiwhateveridk\\AfterDisasterAPI\\HighlightTextApi_AfterDisaster\\TextHighlightApp\\TextHighlightCore\\TextHighlightCore.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\MOJE\\PROGRAMOWANIE\\C#.NETitd\\APItestapiwhateveridk\\AfterDisasterAPI\\HighlightTextApi_AfterDisaster\\TextHighlightApp\\TextHighlightCore\\TextHighlightCore.csproj",
+        "projectName": "TextHighlightCore",
+        "projectPath": "D:\\MOJE\\PROGRAMOWANIE\\C#.NETitd\\APItestapiwhateveridk\\AfterDisasterAPI\\HighlightTextApi_AfterDisaster\\TextHighlightApp\\TextHighlightCore\\TextHighlightCore.csproj",
+        "packagesPath": "C:\\Users\\Piotrek\\.nuget\\packages\\",
+        "outputPath": "D:\\MOJE\\PROGRAMOWANIE\\C#.NETitd\\APItestapiwhateveridk\\AfterDisasterAPI\\HighlightTextApi_AfterDisaster\\TextHighlightApp\\TextHighlightCore\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Piotrek\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[6.4.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.1.2, 3.1.2]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"

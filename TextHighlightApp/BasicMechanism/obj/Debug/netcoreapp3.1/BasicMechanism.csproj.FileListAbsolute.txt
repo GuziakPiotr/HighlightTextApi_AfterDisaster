@@ -78,3 +78,13 @@ D:\MOJE\PROGRAMOWANIE\C#.NETitd\APItestapiwhateveridk\AfterDisasterAPI\Highlight
 D:\MOJE\PROGRAMOWANIE\C#.NETitd\APItestapiwhateveridk\AfterDisasterAPI\HighlightTextApi_AfterDisaster\TextHighlightApp\BasicMechanism\obj\Debug\netcoreapp3.1\BasicMechanism.dll
 D:\MOJE\PROGRAMOWANIE\C#.NETitd\APItestapiwhateveridk\AfterDisasterAPI\HighlightTextApi_AfterDisaster\TextHighlightApp\BasicMechanism\obj\Debug\netcoreapp3.1\BasicMechanism.pdb
 D:\MOJE\PROGRAMOWANIE\C#.NETitd\APItestapiwhateveridk\AfterDisasterAPI\HighlightTextApi_AfterDisaster\TextHighlightApp\BasicMechanism\obj\Debug\netcoreapp3.1\BasicMechanism.genruntimeconfig.cache
+D:\MOJE\PROGRAMOWANIE\C#.NETitd\APItestapiwhateveridk\AfterDisasterAPI\HighlightTextApi_AfterDisaster\TextHighlightApp\BasicMechanism\bin\Debug\netcoreapp3.1\TextHighlightCore.dll
+D:\MOJE\PROGRAMOWANIE\C#.NETitd\APItestapiwhateveridk\AfterDisasterAPI\HighlightTextApi_AfterDisaster\TextHighlightApp\BasicMechanism\bin\Debug\netcoreapp3.1\TextHighlightCore.pdb
+D:\MOJE\PROGRAMOWANIE\C#.NETitd\APItestapiwhateveridk\AfterDisasterAPI\HighlightTextApi_AfterDisaster\TextHighlightApp\BasicMechanism\bin\Debug\netcoreapp3.1\EntityFramework.SqlServer.dll
+D:\MOJE\PROGRAMOWANIE\C#.NETitd\APItestapiwhateveridk\AfterDisasterAPI\HighlightTextApi_AfterDisaster\TextHighlightApp\BasicMechanism\bin\Debug\netcoreapp3.1\EntityFramework.dll
+D:\MOJE\PROGRAMOWANIE\C#.NETitd\APItestapiwhateveridk\AfterDisasterAPI\HighlightTextApi_AfterDisaster\TextHighlightApp\BasicMechanism\bin\Debug\netcoreapp3.1\System.Data.SqlClient.dll
+D:\MOJE\PROGRAMOWANIE\C#.NETitd\APItestapiwhateveridk\AfterDisasterAPI\HighlightTextApi_AfterDisaster\TextHighlightApp\BasicMechanism\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
+D:\MOJE\PROGRAMOWANIE\C#.NETitd\APItestapiwhateveridk\AfterDisasterAPI\HighlightTextApi_AfterDisaster\TextHighlightApp\BasicMechanism\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
+D:\MOJE\PROGRAMOWANIE\C#.NETitd\APItestapiwhateveridk\AfterDisasterAPI\HighlightTextApi_AfterDisaster\TextHighlightApp\BasicMechanism\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+D:\MOJE\PROGRAMOWANIE\C#.NETitd\APItestapiwhateveridk\AfterDisasterAPI\HighlightTextApi_AfterDisaster\TextHighlightApp\BasicMechanism\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\MOJE\PROGRAMOWANIE\C#.NETitd\APItestapiwhateveridk\AfterDisasterAPI\HighlightTextApi_AfterDisaster\TextHighlightApp\BasicMechanism\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll

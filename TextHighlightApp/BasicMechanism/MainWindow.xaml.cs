@@ -13,8 +13,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TextHighlightCore;
+using TextHighlightCore.DataAccessLayer;
+using TextHighlightCore.Extensions;
+using TextHighlightCore.Services;
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.Core.Converters;
+
 
 namespace BasicMechanism
 {
@@ -30,9 +35,10 @@ namespace BasicMechanism
 
     public partial class MainWindow : Window
     {
-        public List<NewRule> codeListOfRules = new List<NewRule>();
+        public List<ColorRule> codeListOfRules = new List<ColorRule>();
         public string colorOfEditedRule;
-
+        private IColoringRuleService _coloringRuleService = new ColoringRuleService();
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -58,7 +64,7 @@ namespace BasicMechanism
             {
                 int selectedIndex = ListOfRules.SelectedIndex;
                 int selectedId = codeListOfRules[selectedIndex].Id;
-                string selectedText = codeListOfRules[selectedIndex].Rule;
+                string selectedText = codeListOfRules[selectedIndex].RuleText;
 
                 colorOfEditedRule = codeListOfRules[selectedIndex].Color;
 
@@ -114,7 +120,7 @@ namespace BasicMechanism
 
         public void DrawingTheListView()
         {
-            List<NewRule> tempList = new List<NewRule>();
+            List<ColorRule> tempList = new List<ColorRule>();
 
             int lenOfList = codeListOfRules.Count;
             int ruleCounter = 0;
@@ -125,12 +131,12 @@ namespace BasicMechanism
             {
                 if(codeListOfRules[i] != null)
                 {
-                    tempList.Insert(ruleCounter, new NewRule { Id = ruleCounter, Rule = codeListOfRules[i].Rule, Color = codeListOfRules[i].Color});
+                    tempList.Insert(ruleCounter, new ColorRule { Id = ruleCounter, RuleText = codeListOfRules[i].RuleText, Color = codeListOfRules[i].Color});
 
                     ListViewItem ruleItem = new ListViewItem();
 
                     ruleItem.Foreground = StringToBrush(codeListOfRules[i].Color);
-                    ruleItem.Content = FormatingNameDispalyedInListOfRules(ruleCounter, codeListOfRules[i].Rule, codeListOfRules[i].Color);
+                    ruleItem.Content = FormatingNameDispalyedInListOfRules(ruleCounter, codeListOfRules[i].RuleText, codeListOfRules[i].Color);
 
                     ListOfRules.Items.Insert(ruleCounter, ruleItem);
                     ruleCounter++;
@@ -149,58 +155,83 @@ namespace BasicMechanism
         
         void RuleWindow_AddOrEditRuleEvent(object sender, RuleAddEvents e)
         {
-            int passedId = e.EventIdOfRule;
-
-            bool isItAddCall = false;
-
-            ListViewItem ruleItem = new ListViewItem();
-            try
+            //START OF context test
+            using(var context = new HighlightContext())
             {
-                codeListOfRules.RemoveAt(passedId);
-            }
-            catch
-            {
-                codeListOfRules.Insert(passedId, new NewRule { Id = passedId, Rule = e.EventTextOfRule, Color = e.EventColorOfRule });
+                context.Database.CreateIfNotExists();
 
-                ruleItem.Content = FormatingNameDispalyedInListOfRules(passedId, e.EventTextOfRule, e.EventColorOfRule);
+                int passedId = e.EventIdOfRule;
 
-                isItAddCall = true;
-            }
-
-            if (isItAddCall == false)
-            {
-                if (e.EventColorOfRule == "")
+                foreach(var rule in codeListOfRules)
                 {
-                    codeListOfRules.Insert(passedId, new NewRule { Id = passedId, Rule = e.EventTextOfRule, Color = colorOfEditedRule });
-                    ruleItem.Content = FormatingNameDispalyedInListOfRules(passedId, e.EventTextOfRule, colorOfEditedRule);
-
-                    ruleItem.Foreground = StringToBrush(colorOfEditedRule);
+                    if(e.EventTextOfRule == rule.RuleText && e.EventColorOfRule == rule.Color)
+                    {
+                        System.Windows.MessageBox.Show("Same exact rule already exist");
+                        return;
+                    }
                 }
-                else
+
+                bool isItAddCall = false;
+                ListViewItem ruleItem = new ListViewItem();
+
+                try
                 {
-                    codeListOfRules.Insert(passedId, new NewRule { Id = passedId, Rule = e.EventTextOfRule, Color = e.EventColorOfRule });
+                    codeListOfRules.RemoveAt(passedId);
+                    var editedRule = context.ColorRules.Find(passedId);
+                    context.ColorRules.Remove(editedRule);
+                }
+                catch
+                {
+                    codeListOfRules.Insert(passedId, new ColorRule { Id = passedId, RuleText = e.EventTextOfRule, Color = e.EventColorOfRule });
+                    AddToHightlightDB(codeListOfRules[passedId]);
                     ruleItem.Content = FormatingNameDispalyedInListOfRules(passedId, e.EventTextOfRule, e.EventColorOfRule);
+                    isItAddCall = true;
+                }
 
+                if (isItAddCall == false)
+                {
+                    if (e.EventColorOfRule == "")
+                    {
+                        codeListOfRules.Insert(passedId, new ColorRule { Id = passedId, RuleText = e.EventTextOfRule, Color = colorOfEditedRule });
+                        AddToHightlightDB(codeListOfRules[passedId]);
+                        ruleItem.Content = FormatingNameDispalyedInListOfRules(passedId, e.EventTextOfRule, colorOfEditedRule);
+                        ruleItem.Foreground = StringToBrush(colorOfEditedRule);
+                    }
+                    else
+                    {
+                        codeListOfRules.Insert(passedId, new ColorRule { Id = passedId, RuleText = e.EventTextOfRule, Color = e.EventColorOfRule });
+                        AddToHightlightDB(codeListOfRules[passedId]);
+                        ruleItem.Content = FormatingNameDispalyedInListOfRules(passedId, e.EventTextOfRule, e.EventColorOfRule);
+
+                        ruleItem.Foreground = StringToBrush(e.EventColorOfRule);
+                    }
+                }
+
+                try
+                {
+                    ListOfRules.Items.RemoveAt(passedId);
+                }
+                catch
+                {
                     ruleItem.Foreground = StringToBrush(e.EventColorOfRule);
+                    ListOfRules.Items.Insert(passedId, ruleItem);
+                    isItAddCall = true;
+                }
+
+                if (isItAddCall == false)
+                {
+                    ListOfRules.Items.Insert(passedId, ruleItem);
                 }
             }
+            //END OF context test
+        }
 
-            try
+        private void AddToHightlightDB(ColorRule rule)
+        {
+            using (var context = new HighlightContext())
             {
-                ListOfRules.Items.RemoveAt(passedId);
+                context.ColorRules.Add(rule);
             }
-            catch
-            {
-                ruleItem.Foreground = StringToBrush(e.EventColorOfRule);
-                ListOfRules.Items.Insert(passedId, ruleItem);
-                isItAddCall = true;
-            }
-
-            if (isItAddCall == false)
-            {
-                ListOfRules.Items.Insert(passedId, ruleItem);
-            }
-        
         }
 
         private string FormatingNameDispalyedInListOfRules(int id, string rule, string color)
@@ -219,46 +250,18 @@ namespace BasicMechanism
         private void ApplyRulesButton_Click(object sender, RoutedEventArgs e)
         {
             ColoredText.Document.Blocks.Clear();
-
             TextRange rawTextRange = new TextRange(RawText.Document.ContentStart, RawText.Document.ContentEnd);
-            TextRange coloredTextRange = new TextRange(ColoredText.Document.ContentStart, ColoredText.Document.ContentEnd);
-
             string insertedText = rawTextRange.Text;
-            coloredTextRange.Text = insertedText;
 
-            foreach(var rule in codeListOfRules)
+            var foundColoredRules= _coloringRuleService.FindRulesInText(codeListOfRules, insertedText);
+            foreach(var rule in foundColoredRules)
             {
-                if(insertedText.Contains(rule.Rule))
-                {
-                    string searchedText = rule.Rule;
-                    int lengthOfRule = rule.Rule.Length;
-                    int index = 0;
-                    int lastIndex = insertedText.LastIndexOf(searchedText);
-                    bool alreadyColored = false;
-                    while(index != lastIndex)
-                    {
-                        if(alreadyColored == false && index == 0)
-                        {
-                            index = insertedText.IndexOf(searchedText);
-                            alreadyColored = true;
-                        }
-                        else
-                        {
-                            index = insertedText.IndexOf(searchedText, index + lengthOfRule);
-                        }
+                string ruleTextOutput = $"{rule.Key.RuleText}: {rule.Value.GetAsStringInline()}\n";
 
-                        //offset miscalculating the range i want. first occuration of a rule is 2 off next is 6 off
-                        //i thought that it might be because of LogicalDirection of ContentStart but idk
-                        TextRange currentRule = new TextRange(
-                            ColoredText.Document.ContentStart.GetPositionAtOffset(index),
-                            ColoredText.Document.ContentStart.GetPositionAtOffset(index + lengthOfRule)
-                            );
-
-                        currentRule.ApplyPropertyValue(TextElement.ForegroundProperty, rule.Color);
-                    }
-                }
+                TextRange coloredTextRange = new TextRange(ColoredText.Document.ContentEnd, ColoredText.Document.ContentEnd);
+                coloredTextRange.Text = ruleTextOutput;
             }
         }
-        //___________________ End of Rule Usage tab _______________________
+
     }
 }
