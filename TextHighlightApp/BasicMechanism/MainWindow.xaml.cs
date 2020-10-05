@@ -44,6 +44,8 @@ namespace BasicMechanism
             InitializeComponent();
             Application.Current.MainWindow = this;
             ListOfRules.SelectionMode = SelectionMode.Single;
+            //LoadFromHighlightDB();
+            //DrawingTheListView();
         }
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
@@ -63,7 +65,7 @@ namespace BasicMechanism
             if (ListOfRules.SelectedItem != null)
             {
                 int selectedIndex = ListOfRules.SelectedIndex;
-                int selectedId = codeListOfRules[selectedIndex].Id;
+                int selectedId = codeListOfRules[selectedIndex].ID;
                 string selectedText = codeListOfRules[selectedIndex].RuleText;
 
                 colorOfEditedRule = codeListOfRules[selectedIndex].Color;
@@ -92,6 +94,8 @@ namespace BasicMechanism
                 int indexOfSelectedRule = ListOfRules.SelectedIndex;
 
                 codeListOfRules.Remove(codeListOfRules[indexOfSelectedRule]);
+                RemoveFromHighlightDB(codeListOfRules[indexOfSelectedRule-1]);
+                
 
                 ListOfRules.Items.Remove(selected);
                 TextOfRule.Text = null;
@@ -120,29 +124,30 @@ namespace BasicMechanism
 
         public void DrawingTheListView()
         {
-            List<ColorRule> tempList = new List<ColorRule>();
+                List<ColorRule> tempList = new List<ColorRule>();
 
-            int lenOfList = codeListOfRules.Count;
-            int ruleCounter = 0;
+                int lenOfList = codeListOfRules.Count;
+                int ruleCounter = 0;
 
-            ListOfRules.Items.Clear();
+                ListOfRules.Items.Clear();
 
-            for(int i =0; i < lenOfList; i++)
-            {
-                if(codeListOfRules[i] != null)
+                
+                for (int i = 0; i < lenOfList; i++)
                 {
-                    tempList.Insert(ruleCounter, new ColorRule { Id = ruleCounter, RuleText = codeListOfRules[i].RuleText, Color = codeListOfRules[i].Color});
+                    if (codeListOfRules[i] != null)
+                    {
+                        tempList.Insert(ruleCounter, new ColorRule { ID = ruleCounter, RuleText = codeListOfRules[i].RuleText, Color = codeListOfRules[i].Color });
 
-                    ListViewItem ruleItem = new ListViewItem();
+                        ListViewItem ruleItem = new ListViewItem();
 
-                    ruleItem.Foreground = StringToBrush(codeListOfRules[i].Color);
-                    ruleItem.Content = FormatingNameDispalyedInListOfRules(ruleCounter, codeListOfRules[i].RuleText, codeListOfRules[i].Color);
+                        ruleItem.Foreground = StringToBrush(codeListOfRules[i].Color);
+                        ruleItem.Content = FormatingNameDispalyedInListOfRules(ruleCounter, codeListOfRules[i].RuleText, codeListOfRules[i].Color);
 
-                    ListOfRules.Items.Insert(ruleCounter, ruleItem);
-                    ruleCounter++;
+                        ListOfRules.Items.Insert(ruleCounter, ruleItem);
+                        ruleCounter++;
+                    }
                 }
-            }
-            codeListOfRules = tempList;
+                codeListOfRules = tempList;          
         }
 
         public Brush StringToBrush(string str)
@@ -155,7 +160,6 @@ namespace BasicMechanism
         
         void RuleWindow_AddOrEditRuleEvent(object sender, RuleAddEvents e)
         {
-            //START OF context test
             using(var context = new HighlightContext())
             {
                 context.Database.CreateIfNotExists();
@@ -177,13 +181,13 @@ namespace BasicMechanism
                 try
                 {
                     codeListOfRules.RemoveAt(passedId);
-                    var editedRule = context.ColorRules.Find(passedId);
-                    context.ColorRules.Remove(editedRule);
+                    var editedRule = context.ColorRules.Find(passedId-1);
+                    RemoveFromHighlightDB(editedRule);
                 }
                 catch
                 {
-                    codeListOfRules.Insert(passedId, new ColorRule { Id = passedId, RuleText = e.EventTextOfRule, Color = e.EventColorOfRule });
-                    AddToHightlightDB(codeListOfRules[passedId]);
+                    codeListOfRules.Insert(passedId, new ColorRule { ID = passedId, RuleText = e.EventTextOfRule, Color = e.EventColorOfRule });
+                    AddToHighlightDB(codeListOfRules[passedId]);
                     ruleItem.Content = FormatingNameDispalyedInListOfRules(passedId, e.EventTextOfRule, e.EventColorOfRule);
                     isItAddCall = true;
                 }
@@ -192,15 +196,15 @@ namespace BasicMechanism
                 {
                     if (e.EventColorOfRule == "")
                     {
-                        codeListOfRules.Insert(passedId, new ColorRule { Id = passedId, RuleText = e.EventTextOfRule, Color = colorOfEditedRule });
-                        AddToHightlightDB(codeListOfRules[passedId]);
+                        codeListOfRules.Insert(passedId, new ColorRule { ID = passedId, RuleText = e.EventTextOfRule, Color = colorOfEditedRule });
+                        AddToHighlightDB(codeListOfRules[passedId]);
                         ruleItem.Content = FormatingNameDispalyedInListOfRules(passedId, e.EventTextOfRule, colorOfEditedRule);
                         ruleItem.Foreground = StringToBrush(colorOfEditedRule);
                     }
                     else
                     {
-                        codeListOfRules.Insert(passedId, new ColorRule { Id = passedId, RuleText = e.EventTextOfRule, Color = e.EventColorOfRule });
-                        AddToHightlightDB(codeListOfRules[passedId]);
+                        codeListOfRules.Insert(passedId, new ColorRule { ID = passedId, RuleText = e.EventTextOfRule, Color = e.EventColorOfRule });
+                        AddToHighlightDB(codeListOfRules[passedId]);
                         ruleItem.Content = FormatingNameDispalyedInListOfRules(passedId, e.EventTextOfRule, e.EventColorOfRule);
 
                         ruleItem.Foreground = StringToBrush(e.EventColorOfRule);
@@ -222,21 +226,46 @@ namespace BasicMechanism
                 {
                     ListOfRules.Items.Insert(passedId, ruleItem);
                 }
+                context.SaveChanges();
             }
-            //END OF context test
         }
 
-        private void AddToHightlightDB(ColorRule rule)
+        private void LoadFromHighlightDB()
+        {
+            using (var context = new HighlightContext())
+            {
+                int recordCounter = 0;
+                foreach(var record in context.ColorRules)
+                {
+                    //can't insert record with ID>0 into codeListOfRules but database starts with 1.
+                    //also IDs are not updating in database so that's hard to use them in loops etc.
+                    codeListOfRules[recordCounter] = record;
+                    recordCounter++;
+                }
+            }
+        }
+
+        private void AddToHighlightDB(ColorRule rule)
         {
             using (var context = new HighlightContext())
             {
                 context.ColorRules.Add(rule);
+                context.SaveChanges();
+            }
+        }
+
+        private void RemoveFromHighlightDB(ColorRule rule)
+        {
+            using(var context = new HighlightContext())
+            {
+                context.ColorRules.Remove(rule);
+                context.SaveChanges();
             }
         }
 
         private string FormatingNameDispalyedInListOfRules(int id, string rule, string color)
         {
-            string displayedName = String.Format("{0}) {1}//{2}", id, rule, color);
+            string displayedName = $"{id}) {rule}//{color}";
 
             return displayedName;
         }

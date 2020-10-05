@@ -8,4 +8,19 @@
     <PackageReference Include="EntityFramework" Version="6.4.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="HightlightSettings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>HightlightSettings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="HightlightSettings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>HightlightSettings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
 </Project>
