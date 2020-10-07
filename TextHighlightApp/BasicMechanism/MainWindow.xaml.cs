@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,13 +65,12 @@ namespace BasicMechanism
             if (ListOfRules.SelectedItem != null)
             {
                 int selectedIndex = ListOfRules.SelectedIndex;
-                int selectedId = codeListOfRules[selectedIndex].Id;
                 string selectedText = codeListOfRules[selectedIndex].RuleText;
 
                 colorOfEditedRule = codeListOfRules[selectedIndex].Color;
 
                 RuleAddWindow ruleWindow = new RuleAddWindow();
-                ruleWindow.indexFromEvent = selectedId;
+                ruleWindow.indexFromEvent = selectedIndex;
                 ruleWindow.RuleText.Text = selectedText;
                 ruleWindow.EditRuleDisclaimer.Text = "If you don't pick a color while editing the rule it will remain the same as before.";
                 ruleWindow.isThisAdd = false;
@@ -121,22 +120,20 @@ namespace BasicMechanism
 
         public void DrawingTheListView()
         {
-                List<ColorRule> tempList = new List<ColorRule>();
-
-                ListOfRules.Items.Clear();
+            ListOfRules.Items.Clear();
                 
-                for (int i = 0; i < codeListOfRules.Count; i++)
+            for (int i = 0; i < codeListOfRules.Count; i++)
+            {
+                if (codeListOfRules[i] != null)
                 {
-                    if (codeListOfRules[i] != null)
-                    {
-                        ListViewItem ruleItem = new ListViewItem();
+                    ListViewItem ruleItem = new ListViewItem();
 
-                        ruleItem.Foreground = StringToBrush(codeListOfRules[i].Color);
-                        ruleItem.Content = FormatingNameDispalyedInListOfRules(i, codeListOfRules[i].RuleText, codeListOfRules[i].Color);
+                    ruleItem.Foreground = StringToBrush(codeListOfRules[i].Color);
+                    ruleItem.Content = FormatingNameDispalyedInListOfRules(i, codeListOfRules[i].RuleText, codeListOfRules[i].Color);
 
-                        ListOfRules.Items.Insert(i, ruleItem);
-                    }
-                }       
+                    ListOfRules.Items.Insert(i, ruleItem);
+                }
+            }       
         }
 
         public Brush StringToBrush(string str)
@@ -165,57 +162,35 @@ namespace BasicMechanism
                 }
 
                 bool isItAddCall = false;
-                ListViewItem ruleItem = new ListViewItem();
-
-                try
+                
+                if(codeListOfRules.Count == passedId)
                 {
-                    codeListOfRules.RemoveAt(passedId);
-                    var editedRule = context.ColorRules.Find(passedId-1);
-                    //RemoveFromHighlightDB(editedRule);
-                }
-                catch
-                {
-                    codeListOfRules.Insert(passedId, new ColorRule { Id = passedId, RuleText = e.EventTextOfRule, Color = e.EventColorOfRule });
-                    AddToHighlightDB(codeListOfRules[passedId]);
-                    ruleItem.Content = FormatingNameDispalyedInListOfRules(passedId, e.EventTextOfRule, e.EventColorOfRule);
                     isItAddCall = true;
+                    var addedRule = new ColorRule { RuleText = e.EventTextOfRule, Color = e.EventColorOfRule };
+                    AddToHighlightDB(addedRule);
+                    var addedRuleFromDB = context.ColorRules.SingleOrDefault(rule => rule.RuleText == e.EventTextOfRule && rule.Color == e.EventColorOfRule);
+                    codeListOfRules.Insert(passedId, addedRuleFromDB);
                 }
-
-                if (isItAddCall == false)
+                else if(isItAddCall == false)
                 {
+                    var editedRule = context.ColorRules.Find(codeListOfRules[passedId].Id);
+                    codeListOfRules.RemoveAt(passedId);
+
                     if (e.EventColorOfRule == "")
                     {
-                        codeListOfRules.Insert(passedId, new ColorRule { Id = passedId, RuleText = e.EventTextOfRule, Color = colorOfEditedRule });
-                        AddToHighlightDB(codeListOfRules[passedId]);
-                        ruleItem.Content = FormatingNameDispalyedInListOfRules(passedId, e.EventTextOfRule, colorOfEditedRule);
-                        ruleItem.Foreground = StringToBrush(colorOfEditedRule);
+                        editedRule.RuleText = e.EventTextOfRule;
+                        ModifyInHighlightDB(editedRule);
                     }
                     else
                     {
-                        codeListOfRules.Insert(passedId, new ColorRule { Id = passedId, RuleText = e.EventTextOfRule, Color = e.EventColorOfRule });
-                        AddToHighlightDB(codeListOfRules[passedId]);
-                        ruleItem.Content = FormatingNameDispalyedInListOfRules(passedId, e.EventTextOfRule, e.EventColorOfRule);
-
-                        ruleItem.Foreground = StringToBrush(e.EventColorOfRule);
+                        editedRule.RuleText = e.EventTextOfRule;
+                        editedRule.Color = e.EventColorOfRule;
+                        ModifyInHighlightDB(editedRule);
                     }
+                    var updatedRuleFromDB = context.ColorRules.Find(editedRule.Id);
+                    codeListOfRules.Insert(passedId, updatedRuleFromDB);
                 }
-
-                try
-                {
-                    ListOfRules.Items.RemoveAt(passedId);
-                }
-                catch
-                {
-                    ruleItem.Foreground = StringToBrush(e.EventColorOfRule);
-                    ListOfRules.Items.Insert(passedId, ruleItem);
-                    isItAddCall = true;
-                }
-
-                if (isItAddCall == false)
-                {
-                    ListOfRules.Items.Insert(passedId, ruleItem);
-                }
-                context.SaveChanges();
+                DrawingTheListView();
             }
         }
 
@@ -232,6 +207,15 @@ namespace BasicMechanism
             using (var context = new HighlightContext())
             {
                 context.ColorRules.Add(rule);
+                context.SaveChanges();
+            }
+        }
+
+        private void ModifyInHighlightDB(ColorRule rule)
+        {
+            using( var context = new HighlightContext())
+            {
+                context.Entry(rule).State = EntityState.Modified;
                 context.SaveChanges();
             }
         }
