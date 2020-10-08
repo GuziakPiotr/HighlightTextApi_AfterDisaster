@@ -42,12 +42,9 @@ namespace BasicMechanism
             // it's really bad way to do it, but it works for now. counter doesn't metter
 
             
-            int noMetterValue = 0;
             foreach (Window window in Application.Current.Windows)
             {
-                if (window == Application.Current.MainWindow)
-                    noMetterValue++;
-                else
+                if (window != Application.Current.MainWindow)
                     window.Close();
             }
             

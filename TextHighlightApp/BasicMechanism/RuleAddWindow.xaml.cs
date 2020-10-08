@@ -60,9 +60,9 @@ namespace BasicMechanism
 
             RuleAddEvents ruleEvent = new RuleAddEvents();
 
-            ruleEvent.EventTextOfRule = text;
-            ruleEvent.EventColorOfRule = color;
-            ruleEvent.EventIdOfRule = indexFromEvent;
+            ruleEvent.TextOfRule = text;
+            ruleEvent.ColorOfRule = color;
+            ruleEvent.IdOfRule = indexFromEvent;
 
             EditRuleDisclaimer.Text = null;
 
@@ -79,8 +79,8 @@ namespace BasicMechanism
 
     public class RuleAddEvents : EventArgs
     {
-        public int EventIdOfRule { get; set; }
-        public string EventTextOfRule { get; set; }
-        public string EventColorOfRule { get; set; }
+        public int IdOfRule { get; set; }
+        public string TextOfRule { get; set; }
+        public string ColorOfRule { get; set; }
     }
 }

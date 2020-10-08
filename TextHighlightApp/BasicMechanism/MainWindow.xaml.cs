@@ -81,7 +81,9 @@ namespace BasicMechanism
                 ruleWindow.ShowDialog();
             }
             else
+            {
                 TextOfRule.Text = "Please select item from the list you want to edit.";
+            }
 
         }
 
@@ -150,45 +152,40 @@ namespace BasicMechanism
             {
                 context.Database.CreateIfNotExists();
 
-                int passedId = e.EventIdOfRule;
+                string passedTextOfRule = e.TextOfRule;
+                string passedColorOfRule = e.ColorOfRule;
+                int passedId = e.IdOfRule;
 
-                foreach(var rule in codeListOfRules)
+                bool doesThatRuleExist = codeListOfRules.Any(rule => rule.RuleText == passedTextOfRule && rule.Color == passedColorOfRule);
+                if(doesThatRuleExist)
                 {
-                    if(e.EventTextOfRule == rule.RuleText && e.EventColorOfRule == rule.Color)
-                    {
-                        System.Windows.MessageBox.Show("Same exact rule already exist");
-                        return;
-                    }
+                    System.Windows.MessageBox.Show("Same exact rule already exist");
+                    return;
                 }
 
-                bool isItAddCall = false;
-                
-                if(codeListOfRules.Count == passedId)
+                if (passedId == codeListOfRules.Count)
                 {
-                    isItAddCall = true;
-                    var addedRule = new ColorRule { RuleText = e.EventTextOfRule, Color = e.EventColorOfRule };
+                    var addedRule = new ColorRule { RuleText = passedTextOfRule, Color = passedColorOfRule };
                     AddToHighlightDB(addedRule);
-                    var addedRuleFromDB = context.ColorRules.SingleOrDefault(rule => rule.RuleText == e.EventTextOfRule && rule.Color == e.EventColorOfRule);
-                    codeListOfRules.Insert(passedId, addedRuleFromDB);
+                    codeListOfRules.Insert(passedId, addedRule);
                 }
-                else if(isItAddCall == false)
+                else
                 {
                     var editedRule = context.ColorRules.Find(codeListOfRules[passedId].Id);
                     codeListOfRules.RemoveAt(passedId);
 
-                    if (e.EventColorOfRule == "")
+                    if (passedColorOfRule == "")
                     {
-                        editedRule.RuleText = e.EventTextOfRule;
+                        editedRule.RuleText = passedTextOfRule;
                         ModifyInHighlightDB(editedRule);
                     }
                     else
                     {
-                        editedRule.RuleText = e.EventTextOfRule;
-                        editedRule.Color = e.EventColorOfRule;
+                        editedRule.RuleText = passedTextOfRule;
+                        editedRule.Color = passedColorOfRule;
                         ModifyInHighlightDB(editedRule);
                     }
-                    var updatedRuleFromDB = context.ColorRules.Find(editedRule.Id);
-                    codeListOfRules.Insert(passedId, updatedRuleFromDB);
+                    codeListOfRules.Insert(passedId, editedRule);
                 }
                 DrawingTheListView();
             }
