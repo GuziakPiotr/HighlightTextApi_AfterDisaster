@@ -9,6 +9,7 @@ namespace TextHighlightCore.DataAccessLayer
     {
         public HighlightContext() : base("Hightlight Context")
         {
+            Database.CreateIfNotExists();
         }
 
         public DbSet<ColorRule> ColorRules { get; set; }

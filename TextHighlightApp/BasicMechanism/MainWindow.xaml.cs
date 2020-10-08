@@ -150,14 +150,12 @@ namespace BasicMechanism
         {
             using(var context = new HighlightContext())
             {
-                context.Database.CreateIfNotExists();
-
                 string passedTextOfRule = e.TextOfRule;
                 string passedColorOfRule = e.ColorOfRule;
                 int passedId = e.IdOfRule;
 
-                bool doesThatRuleExist = codeListOfRules.Any(rule => rule.RuleText == passedTextOfRule && rule.Color == passedColorOfRule);
-                if(doesThatRuleExist)
+                bool ruleExists = codeListOfRules.Any(rule => rule.RuleText == passedTextOfRule && rule.Color == passedColorOfRule);
+                if(ruleExists)
                 {
                     System.Windows.MessageBox.Show("Same exact rule already exist");
                     return;
